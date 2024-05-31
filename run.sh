@@ -1,1 +1,1 @@
-python -m rest_api.main
+python3 -m rest_api.main

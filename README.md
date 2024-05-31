@@ -31,17 +31,20 @@ Run the following command to start the server (the root directory):
 
 ```bash
 docker build --tag langdetect .
-docker run -p 9612:9612 -it langdetect
+docker run --network=postlang --network-alias=langdetect -p 9612:9612 -it langdetect
 ```
+
+The network and the network alias are used to allow PostHog-LLM to communicate with the language detection service.
+Since PostHog-LLM is running in a docker container, we connect the two services by adding them to the same network for *fast* and *reliable* communication.
 
 # Example call
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:9612/conversation_language_detect_plugin' \
+  'http://localhost:9612/conversation_language_detect_plugin' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
   "llm_input": "I like you very very much so",
-  "llm_output": "Qui veut aller au ciné ? Qui veut aller au ciné ?."
+  "llm_output": "Qui veut aller au ciné ? Qui veut aller au ciné ?. Oui Oui"
 }'
 ```
